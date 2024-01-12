@@ -7,6 +7,7 @@ const client = redis.createClient(redisUrl)
 client.hget = util.promisify(client.hget)
 
 const exec = mongoose.Query.prototype.exec
+
 mongoose.Query.prototype.cache = function(options = {}) {
    this.useCache = true;
    this.hashKey = JSON.stringify(options.key || '');
@@ -33,7 +34,7 @@ mongoose.Query.prototype.exec = async function () {
     const doc = JSON.parse(cacheValue)
 
     return Array.isArray(doc)
-      ? doc.map((d) => new this.model(doc))
+      ? doc.map((d) => new this.model(d))
       : new this.model(doc)
   }
 
@@ -47,7 +48,7 @@ mongoose.Query.prototype.exec = async function () {
 }
 
 module.exports = {
-   clearHash(hashKey) {
-     client.del(JSON.stringify(hashKey));
-   }
- };
+  clearHash(hashKey) {
+    client.del(JSON.stringify(hashKey));
+  }
+};
