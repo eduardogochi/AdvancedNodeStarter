@@ -51,6 +51,10 @@ class CustomPage {
     await this.page.goto('localhost:3000')
     await this.page.waitFor('a[href="/auth/logout"]')
   }
+
+  async getContentsOf(selector) {
+    return this.page.$eval(selector, el => el.innerHTML)
+  }
 }
 
 module.exports = CustomPage
