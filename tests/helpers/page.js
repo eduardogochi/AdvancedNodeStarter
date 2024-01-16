@@ -1,4 +1,6 @@
 const puppeteer = require('puppeteer')
+const sessionFactory = require('./../factories/sessionFactory')
+const userFactory = require('./../factories/userFactory')
 
 class CustomPage {
   /* 
@@ -22,6 +24,32 @@ class CustomPage {
 
   constructor(page) {
     this.page = page
+  }
+
+  async login() {
+    /* 
+  Steps to fake the session: 
+        1. Create page instance
+        2. Take an existing user Id and generate fake session object with it
+        3. Sign the session object with keygrip
+        4. Set the session and signature on our page instance as cookies
+     */
+    const user = await userFactory()
+
+    const { session, sig } = sessionFactory(user)
+
+    await this.page.setCookie({
+      name: 'session',
+      value: session,
+    })
+
+    await this.page.setCookie({
+      name: 'session.sig',
+      value: sig,
+    })
+
+    await this.page.goto('localhost:3000')
+    await this.page.waitFor('a[href="/auth/logout"]')
   }
 }
 
