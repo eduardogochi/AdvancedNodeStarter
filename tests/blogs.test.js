@@ -70,8 +70,8 @@ describe('When not logged in', async () => {
       method: 'post',
       path: '/api/blogs',
       data: {
-        title: 'foo',
-        content: 'bar',
+        title: 'My Title',
+        content: 'My Content',
       },
     },
   ]
