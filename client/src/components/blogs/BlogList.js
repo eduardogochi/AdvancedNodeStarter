@@ -19,7 +19,7 @@ class BlogList extends Component {
               <p>{blog.content}</p>
             </div>
             <div className="card-action">
-              <Link to={`/blogs/${blog._id}`}>Read</Link>
+              <Link key={blog._id} to={`/blogs/${blog._id}`}>Read</Link>
             </div>
           </div>
         </div>
